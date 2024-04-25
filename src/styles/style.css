@@ -3821,6 +3821,7 @@ body.IE .register-page-wrap .container{
 }
 .widget-style1 .progress-data{
 	width: 80px;
+	height: 80px;
 }
 .widget-style1 .progress-data .apexcharts-canvas{
 	margin: 0 auto;

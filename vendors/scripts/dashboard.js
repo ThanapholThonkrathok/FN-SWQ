@@ -290,8 +290,11 @@ var options5 = {
 	},
 	colors: ['#1b00ff', '#f56767','#33D1FF','#33FFB2'],
 	grid: {
-		borderColor: '#c7d2dd',
-		strokeDashArray: 5,
+		show: false,
+		padding: {
+			left: 0,
+			right: 0
+		}
 	},
 	plotOptions: {
 		bar: {
