@@ -12,7 +12,7 @@ var options = {
 		height: 100,
 		width: 70,
 		type: 'radialBar',
-	},	
+	},
 	plotOptions: {
 		radialBar: {
 			hollow: {
@@ -82,7 +82,7 @@ var options2 = {
 		height: 100,
 		width: 70,
 		type: 'radialBar',
-	},	
+	},
 	plotOptions: {
 		radialBar: {
 			hollow: {
@@ -152,7 +152,7 @@ var options3 = {
 		height: 100,
 		width: 70,
 		type: 'radialBar',
-	},	
+	},
 	plotOptions: {
 		radialBar: {
 			hollow: {
@@ -222,7 +222,7 @@ var options4 = {
 		height: 100,
 		width: 70,
 		type: 'radialBar',
-	},	
+	},
 	plotOptions: {
 		radialBar: {
 			hollow: {
@@ -278,135 +278,51 @@ var options4 = {
 	}
 };
 
-var options5 = {
-	chart: {
-		height: 350,
-		type: 'bar',
-		parentHeightOffset: 0,
-		fontFamily: 'Poppins, sans-serif',
-		toolbar: {
-			show: false,
-		},
-	},
-	colors: ['#1b00ff', '#f56767','#33D1FF','#33FFB2'],
-	grid: {
-		show: false,
-		padding: {
-			left: 0,
-			right: 0
-		}
-	},
-	plotOptions: {
-		bar: {
-			horizontal: false,
-			columnWidth: '35%',
-			endingShape: 'rounded'
-		},
-	},
-	dataLabels: {
-		enabled: false
-	},
-	stroke: {
-		show: true,
-		width: 2,
-		colors: ['transparent']
-	},
-	series: [{
-		name: 'pH',
-		data: [40, 28, 47, 22, 34, 25, 10, 28, 45, 12, 25, 51 ]
-	}, {
-		name: 'TDS',
-		data: [30, 20, 37, 10, 28, 60, 10, 28, 45, 12, 25, 51 ]
-	},{
-		name: 'DO',
-		data: [10, 20, 37, 10, 28, 35, 10, 28, 45, 12, 25, 51 ]
-	},{
-		name: 'Temp',
-		data: [20, 20, 37, 10, 28, 45, 12, 25, 51, 53, 21, 30 ]
-	}],
-	xaxis: {
-		categories: ['5', '10', '15', '20', '25', '30','35','40','45','50','55','60'],
-		labels: {
-			style: {
-				colors: ['#353535'],
-				fontSize: '16px',
-			},
-		},
-		axisBorder: {
-			color: '#8fa6bc',
-		},
-	},
-	yaxis: {
-		show: false,
-	},
-	legend: {
-		horizontalAlign: 'right',
-		position: 'top',
-		fontSize: '16px',
-		offsetY: 0,
-		labels: {
-			colors: '#353535',
-		},
-		markers: {
-			width: 10,
-			height: 10,
-			radius: 15,
-		},
-		itemMargin: {
-			vertical: 0
-		},
-	},
-	fill: {
-		opacity: 1
 
-	},
-	tooltip: {
-		enabled: false
-	}
-}
+
 
 var options6 = {
 	series: [73],
 	chart: {
-	  height: 350,
-	  type: 'radialBar',
-	  offsetY: 0
+		height: 350,
+		type: 'radialBar',
+		offsetY: 0
 	},
 	colors: ['#0B132B', '#222222'],
 	plotOptions: {
-	  radialBar: {
-		startAngle: -135,
-		endAngle: 135,
-		dataLabels: {
-		  name: {
-			fontSize: '16px',
-			color: undefined,
-			offsetY: 120
-		  },
-		  value: {
-			offsetY: 76,
-			fontSize: '22px',
-			color: undefined,
-			formatter: function (val) {
-			  return val + "%";
+		radialBar: {
+			startAngle: -135,
+			endAngle: 135,
+			dataLabels: {
+				name: {
+					fontSize: '16px',
+					color: undefined,
+					offsetY: 120
+				},
+				value: {
+					offsetY: 76,
+					fontSize: '22px',
+					color: undefined,
+					formatter: function (val) {
+						return val + "%";
+					}
+				}
 			}
-		  }
 		}
-	  }
 	},
 	fill: {
-	  type: 'gradient',
-	  gradient: {
-		  shade: 'dark',
-		  shadeIntensity: 0.15,
-		  inverseColors: false,
-		  opacityFrom: 1,
-		  opacityTo: 1,
-		  stops: [0, 50, 65, 91]
-	  },
+		type: 'gradient',
+		gradient: {
+			shade: 'dark',
+			shadeIntensity: 0.15,
+			inverseColors: false,
+			opacityFrom: 1,
+			opacityTo: 1,
+			stops: [0, 50, 65, 91]
+		},
 	},
 	stroke: {
-	  dashArray: 4
+		dashArray: 4
 	},
 	labels: ['Achieve Goals'],
 };
@@ -423,15 +339,13 @@ chart3.render();
 var chart4 = new ApexCharts(document.querySelector("#chart4"), options4);
 chart4.render();
 
-var chart5 = new ApexCharts(document.querySelector("#chart5"), options5);
-chart5.render();
 
 var chart6 = new ApexCharts(document.querySelector("#chart6"), options6);
 chart6.render();
 
 
 // datatable init
-$('document').ready(function(){
+$('document').ready(function () {
 	$('.data-table').DataTable({
 		scrollCollapse: true,
 		autoWidth: true,
@@ -450,7 +364,7 @@ $('document').ready(function(){
 			searchPlaceholder: "Search",
 			paginate: {
 				next: '<i class="ion-chevron-right"></i>',
-				previous: '<i class="ion-chevron-left"></i>'  
+				previous: '<i class="ion-chevron-left"></i>'
 			}
 		},
 	});
