@@ -1,5 +1,3 @@
-
-
 // Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBuIvI9x3Dcsrpl6cULwCtNtZJWRrVrSBo",
@@ -21,18 +19,18 @@ const database = firebase.database();
 // Function to send data to Realtime Database
 function sendDataToDatabase(data) {
     // Set data to a specific path in your database, replacing existing data
-    database.ref('data').set(data);
+    database.ref("data").set(data);
 }
 
 // Function to fetch data from the specified URL and send it to the database
 function fetchDataAndSendToDatabase() {
-    fetch('http://202.29.238.30:1880/getdata')
-        .then(response => response.json())
-        .then(data => {
+    fetch("http://202.29.238.30:1880/getdata")
+        .then((response) => response.json())
+        .then((data) => {
             // Send fetched data to the Realtime Database
             sendDataToDatabase(data);
         })
-        .catch(error => console.error('Error fetching data:', error));
+        .catch((error) => console.error("Error fetching data:", error));
 }
 
 // Call the function initially to start the process
@@ -41,13 +39,10 @@ fetchDataAndSendToDatabase();
 // Set interval to fetch and send data every 3 seconds
 setInterval(fetchDataAndSendToDatabase, 1000);
 
-
-
-
 // Function to update the HTML with fetched numerical data for a specific parameter
 function updateHTMLWithNumericData(parameter, data) {
     // Get the element by its ID
-    const element = document.getElementById('display' + parameter);
+    const element = document.getElementById("display" + parameter);
     // Update the HTML content with the fetched numerical data
     element.innerText = data[parameter];
 }
@@ -55,16 +50,16 @@ function updateHTMLWithNumericData(parameter, data) {
 // Function to fetch data from Realtime Database and update HTML for all numerical parameters
 function fetchDataAndUpdateHTML() {
     // Reference to the 'data' node in your database
-    const dataRef = database.ref('data');
+    const dataRef = database.ref("data");
 
     // Fetch data from the database
-    dataRef.once('value', (snapshot) => {
+    dataRef.once("value", (snapshot) => {
         const data = snapshot.val();
         // Update HTML with fetched numerical data for each parameter
-        updateHTMLWithNumericData('DO', data);
-        updateHTMLWithNumericData('TDS', data);
-        updateHTMLWithNumericData('pH', data);
-        updateHTMLWithNumericData('Temp', data);
+        updateHTMLWithNumericData("DO", data);
+        updateHTMLWithNumericData("TDS", data);
+        updateHTMLWithNumericData("pH", data);
+        updateHTMLWithNumericData("Temp", data);
     });
 }
 
@@ -74,66 +69,55 @@ fetchDataAndUpdateHTML();
 // Set interval to fetch and update data every 3 seconds
 setInterval(fetchDataAndUpdateHTML, 1000);
 
+// Function to fetch data from the URL and push to Firebase Realtime Database
+const fetchDataAndPushToDatabase = () => {
+    fetch("http://202.29.238.30:1880/getdata")
+        .then((response) => response.json())
+        .then((data) => {
+            // Generate unique key for the new data
+            const newDataKey = firebase.database().ref().child("data5min").push().key;
 
-function sendDataPeriodically() {
-    // Function to send data to the database
-    function sendDataToDatabase(data) {
-        // Set data to a specific path in your database, replacing existing data
-        database.ref('data15min').set(data); // เปลี่ยนชื่อของเส้นทางในฐานข้อมูลเป็น 'data15min'
-    }
+            // Set the data with the generated key
+            firebase
+                .database()
+                .ref("data5min/" + newDataKey)
+                .set(data);
+        })
+        .catch((error) => console.error("Error fetching data:", error));
+};
 
-    // Function to fetch data from the specified URL and send it to the database
-    function fetchDataAndSendToDatabase() {
-        fetch('http://202.29.238.30:1880/getdata')
-            .then(response => response.json())
-            .then(data => {
-                // Send fetched data to the Realtime Database
-                sendDataToDatabase(data);
-            })
-            .catch(error => console.error('Error fetching data:', error))
-            .finally(() => {
-                // Call the function again after 5 minutes
-                setTimeout(fetchDataAndSendToDatabase, 300000); // 5 minutes in milliseconds
-            });
-    }
+// Fetch data and push to database every 5 minutes
+setInterval(fetchDataAndPushToDatabase, 300000);
 
-    // Call the function initially to start the process
-    fetchDataAndSendToDatabase();
-}
-
-// Start sending data periodically
-sendDataPeriodically();
-
-
-const options5 = {
+var options5 = {
     chart: {
         height: 350,
-        type: 'bar',
+        type: "bar",
         parentHeightOffset: 0,
-        fontFamily: 'Poppins, sans-serif',
+        fontFamily: "Poppins, sans-serif",
         toolbar: {
-            show: false
-        }
+            show: false,
+        },
     },
-    colors: ['#1b00ff', '#f56767', '#33D1FF', '#33FFB2'],
+    colors: ["#1b00ff", "#f56767", "#33D1FF", "#33FFB2"],
     grid: {
-        borderColor: '#c7d2dd',
-        strokeDashArray: 5
+        borderColor: "#c7d2dd",
+        strokeDashArray: 5,
     },
     plotOptions: {
         bar: {
             horizontal: false,
-            columnWidth: '35%',
-            endingShape: 'rounded'
-        }
+            columnWidth: "100%", // กำหนดให้แท่งมีขนาดเท่ากันทั้งหมด
+            endingShape: "rounded",
+        },
     },
     dataLabels: {
-        enabled: false
+        enabled: false,
     },
     stroke: {
         show: true,
         width: 2,
-        colors: ['transparent']
+        colors: ["transparent"],
     },
     series: [{
         name: 'pH',
@@ -141,73 +125,103 @@ const options5 = {
     }, {
         name: 'TDS',
         data: []
-    }, {
+    },{
         name: 'DO',
         data: []
-    }, {
+    },{
         name: 'Temp',
         data: []
     }],
     xaxis: {
-        categories: ['5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60'],
+        categories: [
+            "5",
+            "10",
+            "15",
+            "20",
+            "25",
+            "30",
+            "35",
+            "40",
+            "45",
+            "50",
+            "55",
+            "60",
+        ],
+        tickAmount: 4,
+        
         labels: {
             style: {
-                colors: '#353535',
-                fontSize: '16px'
+                colors: ["#353535"],
+                fontSize: "16px",
             },
-            axisBorder: {
-                color: '#8fa6bc'
-            }
-        }
+        },
+        axisBorder: {
+            color: "#8fa6bc",
+        },
     },
     yaxis: {
-        show: false
+        show: false,
     },
     legend: {
-        horizontalAlign: 'right',
-        position: 'top',
-        fontSize: '16px',
+        horizontalAlign: "right",
+        position: "top",
+        fontSize: "16px",
         offsetY: 0,
         labels: {
-            colors: '#353535'
+            colors: "#353535",
         },
         markers: {
             width: 10,
             height: 10,
-            radius: 15
+            radius: 15,
         },
         itemMargin: {
-            vertical: 0
-        }
+            vertical: 0, // กำหนดให้ไม่มีความห่างในแต่ละชุดข้อมูล
+        },
     },
     fill: {
-        opacity: 1
+        opacity: 1,
     },
     tooltip: {
-        enabled: false
-    }
+        enabled: false,
+    },
 };
 
-const chart5 = new ApexCharts(document.querySelector('#chart5'), options5);
-chart5.render();
+// สร้างตัวแปรเก็บ reference ของ Firebase Realtime Database
+var databaseRef = firebase.database().ref("data5min");
 
-function updateChartData() {
-    database.ref('/data15min').on('value', (snapshot) => {
-        const data = snapshot.val(); // Assuming data15min is a JSON object at this path
+// เพิ่ม event listener เพื่อดักเหตุการณ์การเปลี่ยนแปลงในข้อมูล
+databaseRef.on("value", function (snapshot) {
+    var newData = snapshot.val(); // ดึงข้อมูลทั้งหมดจาก Firebase Realtime Database
+    var pHData = [];
+    var TDSData = [];
+    var DOData = [];
+    var TempData = [];
 
-        // Check data structure and handle potential errors (e.g., empty data)
-        if (!data || !Array.isArray(data)) {
-            console.error('Error: Invalid data structure in Realtime Database');
-            return;
+    // วนลูปเพื่อนำข้อมูลที่ดึงมาไปใช้ในรูปแบบที่ ApexCharts ต้องการ
+    for (var key in newData) {
+        if (newData.hasOwnProperty(key)) {
+            pHData.push(newData[key].pH);
+            TDSData.push(newData[key].TDS);
+            DOData.push(newData[key].DO);
+            TempData.push(newData[key].Temp);
         }
+    }
 
-        const formattedData = data.map((dataPoint) => ({
-            name: dataPoint.timestamp, // Assuming timestamp property exists
-            data: [dataPoint.pH, dataPoint.TDS, dataPoint.DO, dataPoint.Temp]
-        }));
+    // อัปเดตข้อมูลใน options5 ของคุณ
+    options5.series = [
+        { name: "pH", data: pHData },
+        { name: "TDS", data: TDSData },
+        { name: "DO", data: DOData },
+        { name: "Temp", data: TempData },
+    ];
 
-        chart5.updateSeries(formattedData); // Update chart with new data
-    });
-}
+    // แทนที่ตำแหน่งข้อมูลเพื่อเปลี่ยนลำดับ
+    var tempSeries = options5.series[2]; // เก็บข้อมูลของ DO
+    options5.series[2] = options5.series[3]; // เปลี่ยน DO ให้มาอยู่ที่ตำแหน่งข้อมูลของ Temp
+    options5.series[3] = tempSeries; // เปลี่ยน Temp ให้มาอยู่ที่ตำแหน่งข้อมูลของ DO
 
-updateChartData(); // Initial data fetch and chart update
+    // เรียกใช้งาน ApexCharts เพื่อแสดงผล
+    var chart5 = new ApexCharts(document.querySelector("#chart5"), options5);
+    chart5.render();
+});
