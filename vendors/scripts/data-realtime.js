@@ -1,3 +1,5 @@
+
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBuIvI9x3Dcsrpl6cULwCtNtZJWRrVrSBo",
@@ -103,3 +105,109 @@ function sendDataPeriodically() {
 sendDataPeriodically();
 
 
+const options5 = {
+    chart: {
+        height: 350,
+        type: 'bar',
+        parentHeightOffset: 0,
+        fontFamily: 'Poppins, sans-serif',
+        toolbar: {
+            show: false
+        }
+    },
+    colors: ['#1b00ff', '#f56767', '#33D1FF', '#33FFB2'],
+    grid: {
+        borderColor: '#c7d2dd',
+        strokeDashArray: 5
+    },
+    plotOptions: {
+        bar: {
+            horizontal: false,
+            columnWidth: '35%',
+            endingShape: 'rounded'
+        }
+    },
+    dataLabels: {
+        enabled: false
+    },
+    stroke: {
+        show: true,
+        width: 2,
+        colors: ['transparent']
+    },
+    series: [{
+        name: 'pH',
+        data: []
+    }, {
+        name: 'TDS',
+        data: []
+    }, {
+        name: 'DO',
+        data: []
+    }, {
+        name: 'Temp',
+        data: []
+    }],
+    xaxis: {
+        categories: ['5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60'],
+        labels: {
+            style: {
+                colors: '#353535',
+                fontSize: '16px'
+            },
+            axisBorder: {
+                color: '#8fa6bc'
+            }
+        }
+    },
+    yaxis: {
+        show: false
+    },
+    legend: {
+        horizontalAlign: 'right',
+        position: 'top',
+        fontSize: '16px',
+        offsetY: 0,
+        labels: {
+            colors: '#353535'
+        },
+        markers: {
+            width: 10,
+            height: 10,
+            radius: 15
+        },
+        itemMargin: {
+            vertical: 0
+        }
+    },
+    fill: {
+        opacity: 1
+    },
+    tooltip: {
+        enabled: false
+    }
+};
+
+const chart5 = new ApexCharts(document.querySelector('#chart5'), options5);
+chart5.render();
+
+function updateChartData() {
+    database.ref('/data15min').on('value', (snapshot) => {
+        const data = snapshot.val(); // Assuming data15min is a JSON object at this path
+
+        // Check data structure and handle potential errors (e.g., empty data)
+        if (!data || !Array.isArray(data)) {
+            console.error('Error: Invalid data structure in Realtime Database');
+            return;
+        }
+
+        const formattedData = data.map((dataPoint) => ({
+            name: dataPoint.timestamp, // Assuming timestamp property exists
+            data: [dataPoint.pH, dataPoint.TDS, dataPoint.DO, dataPoint.Temp]
+        }));
+
+        chart5.updateSeries(formattedData); // Update chart with new data
+    });
+}
+
+updateChartData(); // Initial data fetch and chart update
