@@ -11,6 +11,8 @@ $(".tab-wizard").steps({
 	},
 	onFinished: function (event, currentIndex) {
 		$('#success-modal').modal('show');
+		// เรียกใช้ฟังก์ชันที่ทำการตรวจสอบและลงทะเบียนผู้ใช้
+		handleRegistration();
 	}
 });
 
@@ -29,5 +31,8 @@ $(".tab-wizard2").steps({
 	},
 	onFinished: function(event, currentIndex) {
 		$('#success-modal-btn').trigger('click');
+		// เรียกใช้ฟังก์ชันที่ทำการตรวจสอบและลงทะเบียนผู้ใช้
+		handleRegistration();
 	}
 });
+
