@@ -282,3 +282,4 @@ var options9 = {
 };
 var chart = new ApexCharts(document.querySelector("#chart9"), options9);
 chart.render();
+
