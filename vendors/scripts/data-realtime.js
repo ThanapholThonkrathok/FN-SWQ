@@ -70,24 +70,70 @@ fetchDataAndUpdateHTML();
 setInterval(fetchDataAndUpdateHTML, 1000);
 
 // Function to fetch data from the URL and push to Firebase Realtime Database
+let counter = 5; // เริ่มต้นที่ 5
+
 const fetchDataAndPushToDatabase = () => {
   fetch("http://202.29.238.30:1880/getdata")
     .then((response) => response.json())
     .then((data) => {
-      // Generate unique key for the new data
-      const newDataKey = firebase.database().ref().child("data5min").push().key;
+      // สร้างชื่อของข้อมูลใหม่ด้วยตัวเลขที่เพิ่มขึ้นทีละห้า
+      const newDataKey = counter;
 
-      // Set the data with the generated key
+      // ตั้งค่าข้อมูลที่มี key ที่สร้างขึ้น
       firebase
         .database()
         .ref("data5min/" + newDataKey)
-        .set(data);
+        .set(data)
+        .then(() => {
+          // เพิ่มค่า counter ทีละ 5
+          counter += 5;
+
+          // เมื่อ newDataKey ถึง 60 ให้ลบข้อมูลทั้งหมด
+          if (newDataKey >= 60) {
+            firebase.database().ref("data5min").remove();
+            counter = 5; // เริ่มต้นนับใหม่ที่ 5
+          }
+        });
     })
     .catch((error) => console.error("Error fetching data:", error));
 };
 
-// Fetch data and push to database every 5 minutes
+// เรียกใช้ fetchDataAndPushToDatabase ทุกๆ 5 นาที
 setInterval(fetchDataAndPushToDatabase, 300000);
+
+
+const fetchDataAndPushToDatabasHr = () => {
+  fetch("http://202.29.238.30:1880/getdata")
+    .then((response) => response.json())
+    .then((data) => {
+      // สร้างชื่อของข้อมูลใหม่ด้วยตัวเลขที่เพิ่มขึ้นทีละห้า
+      const newDataKeyHr = counter;
+
+      // ตั้งค่าข้อมูลที่มี key ที่สร้างขึ้น
+      firebase
+        .database()
+        .ref("data1Hr/" + newDataKeyHr)
+        .set(data)
+        .then(() => {
+          // เพิ่มค่า counter ทีละ 1
+          counter += 1;
+
+          // เมื่อ newDataKey ถึง 60 ให้ลบข้อมูลทั้งหมด
+          if (newDataKey >= 24) {
+            firebase.database().ref("data1Hr").remove();
+            counter = 1; // เริ่มต้นนับใหม่ที่ 1
+          }
+        });
+    })
+    .catch((error) => console.error("Error fetching data:", error));
+};
+
+// เรียกใช้ fetchDataAndPushToDatabase ทุกๆ 5 นาที
+setInterval(fetchDataAndPushToDatabasHr, 3000);
+
+
+
+
 
 var options5 = {
   chart: {
@@ -138,22 +184,8 @@ var options5 = {
     },
   ],
   xaxis: {
-    categories: [
-      "5",
-      "10",
-      "15",
-      "20",
-      "25",
-      "30",
-      "35",
-      "40",
-      "45",
-      "50",
-      "55",
-      "60",
-    ],
+    categories: [],
     tickAmount: 4,
-
     labels: {
       style: {
         colors: ["#353535"],
@@ -206,10 +238,11 @@ databaseRef.on("value", function (snapshot) {
   // วนลูปเพื่อนำข้อมูลที่ดึงมาไปใช้ในรูปแบบที่ ApexCharts ต้องการ
   for (var key in newData) {
     if (newData.hasOwnProperty(key)) {
-      pHData.push(newData[key].pH);
-      TDSData.push(newData[key].TDS);
-      DOData.push(newData[key].DO);
-      TempData.push(newData[key].Temp);
+      // เก็บข้อมูลตามค่าของแกน x แต่ละค่า
+      pHData.push({ x: key, y: newData[key].pH });
+      TDSData.push({ x: key, y: newData[key].TDS });
+      DOData.push({ x: key, y: newData[key].DO });
+      TempData.push({ x: key, y: newData[key].Temp });
     }
   }
 
@@ -221,12 +254,8 @@ databaseRef.on("value", function (snapshot) {
     { name: "Temp", data: TempData },
   ];
 
-  // แทนที่ตำแหน่งข้อมูลเพื่อเปลี่ยนลำดับ
-  var tempSeries = options5.series[2]; // เก็บข้อมูลของ DO
-  options5.series[2] = options5.series[3]; // เปลี่ยน DO ให้มาอยู่ที่ตำแหน่งข้อมูลของ Temp
-  options5.series[3] = tempSeries; // เปลี่ยน Temp ให้มาอยู่ที่ตำแหน่งข้อมูลของ DO
-
   // เรียกใช้งาน ApexCharts เพื่อแสดงผล
   var chart5 = new ApexCharts(document.querySelector("#chart5"), options5);
   chart5.render();
 });
+
