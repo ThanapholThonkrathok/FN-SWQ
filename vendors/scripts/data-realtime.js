@@ -102,6 +102,38 @@ const fetchDataAndPushToDatabase = () => {
 setInterval(fetchDataAndPushToDatabase, 300000);
 
 
+const fetchDataAndPushToDatabasHr = () => {
+  fetch("http://202.29.238.30:1880/getdata")
+    .then((response) => response.json())
+    .then((data) => {
+      // สร้างชื่อของข้อมูลใหม่ด้วยตัวเลขที่เพิ่มขึ้นทีละห้า
+      const newDataKeyHr = counter;
+
+      // ตั้งค่าข้อมูลที่มี key ที่สร้างขึ้น
+      firebase
+        .database()
+        .ref("data1Hr/" + newDataKeyHr)
+        .set(data)
+        .then(() => {
+          // เพิ่มค่า counter ทีละ 1
+          counter += 1;
+
+          // เมื่อ newDataKey ถึง 60 ให้ลบข้อมูลทั้งหมด
+          if (newDataKey >= 24) {
+            firebase.database().ref("data1Hr").remove();
+            counter = 1; // เริ่มต้นนับใหม่ที่ 1
+          }
+        });
+    })
+    .catch((error) => console.error("Error fetching data:", error));
+};
+
+// เรียกใช้ fetchDataAndPushToDatabase ทุกๆ 5 นาที
+setInterval(fetchDataAndPushToDatabasHr, 3000);
+
+
+
+
 
 var options5 = {
   chart: {
