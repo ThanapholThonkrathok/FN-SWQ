@@ -99,15 +99,16 @@ const fetchDataAndPushToDatabase = () => {
 };
 
 // เรียกใช้ fetchDataAndPushToDatabase ทุกๆ 5 นาที
-setInterval(fetchDataAndPushToDatabase, 300000);
+setInterval(fetchDataAndPushToDatabase, 3000);
 
+let counterHr = 1;
 
 const fetchDataAndPushToDatabasHr = () => {
   fetch("http://202.29.238.30:1880/getdata")
     .then((response) => response.json())
     .then((data) => {
       // สร้างชื่อของข้อมูลใหม่ด้วยตัวเลขที่เพิ่มขึ้นทีละห้า
-      const newDataKeyHr = counter;
+      const newDataKeyHr = counterHr;
 
       // ตั้งค่าข้อมูลที่มี key ที่สร้างขึ้น
       firebase
@@ -116,12 +117,12 @@ const fetchDataAndPushToDatabasHr = () => {
         .set(data)
         .then(() => {
           // เพิ่มค่า counter ทีละ 1
-          counter += 1;
+          counterHr += 1;
 
           // เมื่อ newDataKey ถึง 60 ให้ลบข้อมูลทั้งหมด
-          if (newDataKey >= 24) {
+          if (newDataKeyHr >= 24) {
             firebase.database().ref("data1Hr").remove();
-            counter = 1; // เริ่มต้นนับใหม่ที่ 1
+            counterHr = 1; // เริ่มต้นนับใหม่ที่ 1
           }
         });
     })
@@ -129,9 +130,54 @@ const fetchDataAndPushToDatabasHr = () => {
 };
 
 // เรียกใช้ fetchDataAndPushToDatabase ทุกๆ 5 นาที
-setInterval(fetchDataAndPushToDatabasHr, 3000);
+setInterval(fetchDataAndPushToDatabasHr, 300000);
 
 
+let currentMonthAbbreviation = getMonthAbbreviation(new Date());
+const monthsData = {};
+
+const fetchDataAndPushToDatabasMonth = () => {
+  fetch("http://202.29.238.30:1880/getdata")
+    .then((response) => response.json())
+    .then((data) => {
+      // เพิ่มข้อมูลเข้าสู่รายการของเดือนปัจจุบัน
+      if (!monthsData[currentMonthAbbreviation]) {
+        monthsData[currentMonthAbbreviation] = [];
+      }
+      monthsData[currentMonthAbbreviation].push(data);
+
+      // เมื่อมีการเปลี่ยนเดือนใหม่
+      const newMonthAbbreviation = getMonthAbbreviation(new Date());
+      if (newMonthAbbreviation !== currentMonthAbbreviation) {
+        const year = new Date().getFullYear();
+        // ส่งข้อมูลของเดือนปัจจุบันไปยัง Firebase
+        firebase
+          .database()
+          .ref(`monthlyData/${year}/${currentMonthAbbreviation}`)
+          .set(monthsData[currentMonthAbbreviation])
+          .then(() => {
+            // ล้างข้อมูลของเดือนปัจจุบัน
+            monthsData[currentMonthAbbreviation] = [];
+
+            // เปลี่ยนเดือนปัจจุบันเป็นเดือนใหม่
+            currentMonthAbbreviation = newMonthAbbreviation;
+          })
+          .catch((error) => console.error("Error pushing monthly data:", error));
+      }
+    })
+    .catch((error) => console.error("Error fetching data:", error));
+};
+
+// เรียกใช้ fetchDataAndPushToDatabase ทุกๆ 3 วินาที
+setInterval(fetchDataAndPushToDatabasMonth, 3000);
+
+// ฟังก์ชันสำหรับรับตัวย่อของเดือน
+const getMonthAbbreviation = (date) => {
+  const monthIndex = date.getMonth();
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return monthNames[monthIndex];
+};
 
 
 
