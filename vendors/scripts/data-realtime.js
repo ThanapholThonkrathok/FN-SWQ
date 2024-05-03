@@ -99,7 +99,7 @@ const fetchDataAndPushToDatabase = () => {
 };
 
 // เรียกใช้ fetchDataAndPushToDatabase ทุกๆ 5 นาที
-setInterval(fetchDataAndPushToDatabase, 3000);
+setInterval(fetchDataAndPushToDatabase, 300000);
 
 let counterHr = 1;
 
@@ -133,51 +133,30 @@ const fetchDataAndPushToDatabasHr = () => {
 setInterval(fetchDataAndPushToDatabasHr, 300000);
 
 
-let currentMonthAbbreviation = getMonthAbbreviation(new Date());
-const monthsData = {};
-
-const fetchDataAndPushToDatabasMonth = () => {
+const fetchDataAndPushToDatabaseMonth = () => {
   fetch("http://202.29.238.30:1880/getdata")
     .then((response) => response.json())
     .then((data) => {
-      // เพิ่มข้อมูลเข้าสู่รายการของเดือนปัจจุบัน
-      if (!monthsData[currentMonthAbbreviation]) {
-        monthsData[currentMonthAbbreviation] = [];
-      }
-      monthsData[currentMonthAbbreviation].push(data);
+      const monthNames = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+      const now = new Date();
+      const monthAbbreviation = monthNames[now.getMonth()]; // หาชื่อย่อของเดือนปัจจุบัน
 
-      // เมื่อมีการเปลี่ยนเดือนใหม่
-      const newMonthAbbreviation = getMonthAbbreviation(new Date());
-      if (newMonthAbbreviation !== currentMonthAbbreviation) {
-        const year = new Date().getFullYear();
-        // ส่งข้อมูลของเดือนปัจจุบันไปยัง Firebase
-        firebase
-          .database()
-          .ref(`monthlyData/${year}/${currentMonthAbbreviation}`)
-          .set(monthsData[currentMonthAbbreviation])
-          .then(() => {
-            // ล้างข้อมูลของเดือนปัจจุบัน
-            monthsData[currentMonthAbbreviation] = [];
-
-            // เปลี่ยนเดือนปัจจุบันเป็นเดือนใหม่
-            currentMonthAbbreviation = newMonthAbbreviation;
-          })
-          .catch((error) => console.error("Error pushing monthly data:", error));
-      }
+      firebase
+        .database()
+        .ref("data1Month/" + monthAbbreviation)
+        .set(data)
+        .then(() => {
+          // ไม่ต้องเพิ่ม counter หรือเงื่อนไขเพิ่มเติม
+        });
     })
     .catch((error) => console.error("Error fetching data:", error));
 };
 
-// เรียกใช้ fetchDataAndPushToDatabase ทุกๆ 3 วินาที
-setInterval(fetchDataAndPushToDatabasMonth, 3000);
+// เรียกใช้ fetchDataAndPushToDatabaseMonth ทุกๆ 1 เดือน
+setInterval(fetchDataAndPushToDatabaseMonth, 3000); // ประมาณ 1 เดือน (จำนวนวินาที)
 
-// ฟังก์ชันสำหรับรับตัวย่อของเดือน
-const getMonthAbbreviation = (date) => {
-  const monthIndex = date.getMonth();
-  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  return monthNames[monthIndex];
-};
+
+
 
 
 
