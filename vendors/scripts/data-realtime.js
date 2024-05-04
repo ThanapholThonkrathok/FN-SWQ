@@ -133,20 +133,27 @@ const fetchDataAndPushToDatabasHr = () => {
 setInterval(fetchDataAndPushToDatabasHr, 300000);
 
 
+let counterMonth = 0; // เริ่มต้นที่เดือนมกราคม
+
 const fetchDataAndPushToDatabaseMonth = () => {
   fetch("http://202.29.238.30:1880/getdata")
     .then((response) => response.json())
     .then((data) => {
       const monthNames = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-      const now = new Date();
-      const monthAbbreviation = monthNames[now.getMonth()]; // หาชื่อย่อของเดือนปัจจุบัน
+      const monthAbbreviation = monthNames[counterMonth]; // หาชื่อย่อของเดือนปัจจุบัน
+      const newDataKeyMonth = monthAbbreviation ;
 
       firebase
         .database()
-        .ref("data1Month/" + monthAbbreviation)
+        .ref("data1Month/" + newDataKeyMonth)
         .set(data)
         .then(() => {
-          // ไม่ต้องเพิ่ม counter หรือเงื่อนไขเพิ่มเติม
+          counterMonth += 1;
+
+          // เมื่อ counterMonth ถึง 12 ให้รีเซ็ตค่า counter
+          if (counterMonth > 11) {
+            counterMonth = 0;
+          }
         });
     })
     .catch((error) => console.error("Error fetching data:", error));
@@ -154,6 +161,7 @@ const fetchDataAndPushToDatabaseMonth = () => {
 
 // เรียกใช้ fetchDataAndPushToDatabaseMonth ทุกๆ 1 เดือน
 setInterval(fetchDataAndPushToDatabaseMonth, 3000); // ประมาณ 1 เดือน (จำนวนวินาที)
+
 
 
 
