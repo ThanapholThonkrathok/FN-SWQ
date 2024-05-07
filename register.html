@@ -107,21 +107,6 @@
 												<input type="text" id="fullName" class="form-control" required/>
 											</div>
 										</div>
-										<div class="form-group row align-items-center">
-											<label class="col-sm-4 col-form-label">Gender*</label>
-											<div class="col-sm-8">
-												<div class="custom-control custom-radio custom-control-inline pb-0">
-													<input type="radio" id="male" name="gender"
-														class="custom-control-input" required/>
-													<label class="custom-control-label" for="male">Male</label>
-												</div>
-												<div class="custom-control custom-radio custom-control-inline pb-0">
-													<input type="radio" id="female" name="gender"
-														class="custom-control-input" required/>
-													<label class="custom-control-label" for="female">Female</label>
-												</div>
-											</div>
-										</div>
 										<div class="form-group row">
 											<label class="col-sm-4 col-form-label">City</label>
 											<div class="col-sm-8">
@@ -166,12 +151,6 @@
 													<div class="col-sm-8" id="overview-fullname"></div>
 												</div>
 											</li>
-											<li>
-												<div class="row">
-													<div class="col-sm-4 weight-600">Gender</div>
-													<div class="col-sm-8" id="overview-gender"></div>
-												</div>
-											</li>
 										</ul>
 										<div class="custom-control custom-checkbox mt-4">
 											<input type="checkbox" class="custom-control-input" id="customCheck1" />
@@ -200,7 +179,7 @@
 				<div class="modal-body text-center font-18">
 					<h3 class="mb-20">Form Submitted!</h3>
 					<div class="mb-30 text-center">
-						<img src="vendors/images/success.png" />
+						<img src="vendors/images/true.png" />
 					</div>
 					Plese Login in Login page
 				</div>
@@ -210,6 +189,23 @@
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id="success-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+	aria-hidden="false">
+	<div class="modal-dialog modal-dialog-centered max-width-400" role="document">
+		<div class="modal-content">
+			<div class="modal-body text-center font-18">
+				<h3 class="mb-20">Form Submitted!</h3>
+				<div class="mb-30 text-center">
+					<img src="vendors/images/false.png" />
+				</div>
+				Plese Login in Login page
+			</div>
+			<div class="modal-footer justify-content-center">
+				<a href="login.html" class="btn btn-primary">Done</a>
+			</div>
+		</div>
+	</div>
+</div>
 	<!-- success Popup html End -->
 	<!-- js -->
 	<script src="vendors/scripts/core.js"></script>
