@@ -15,19 +15,6 @@ const firestore = firebase.firestore();
 
 // Function to handle user registration
 function registerWithEmailAndPassword(email, password) {
-  // Check password strength
-  if (password.length < 6) {
-    console.error("Password must be at least 6 characters long");
-    return Promise.reject(new Error("Password must be at least 6 characters long"));
-  }
-
-  // Check password complexity (e.g., must contain at least one digit and one special character)
-  const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*])[\w!@#$%^&*]{6,}$/;
-  if (!passwordRegex.test(password)) {
-    console.error("Password must contain at least one digit and one special character");
-    return Promise.reject(new Error("Password must contain at least one digit and one special character"));
-  }
-
   return firebase.auth().createUserWithEmailAndPassword(email, password);
 }
 
@@ -43,7 +30,7 @@ function writeUserData(email, username, fullName, gender, city, state) {
     email: email,
     username: username,
     fullName: fullName,
-    gender: gender.checked ? "male" : "female", // Change to "male" or "female" based on selection
+    gender: gender,
     city: city,
     state: state
   })
@@ -65,44 +52,27 @@ function handleNextButtonClick() {
   var city = document.getElementById('city').value;
   var state = document.getElementById('state').value;
 
-  // Select overview elements
-  var overviewEmail = document.getElementById('overview-email');
-  var overviewUsername = document.getElementById('overview-username');
-  var overviewPassword = document.getElementById('overview-password');
-  var overviewFullName = document.getElementById('overview-fullname');
-  var overviewGender = document.getElementById('overview-gender');
-  var overviewCity = document.getElementById('overview-city');
-  var overviewState = document.getElementById('overview-state');
-
-  // Check if all overview elements exist
-  if (!overviewEmail || !overviewUsername || !overviewPassword || !overviewFullName || !overviewGender || !overviewCity || !overviewState) {
-    console.error("One or more overview elements are missing");
-    return;
-  }
-
-  // Set text content of overview elements
-  overviewEmail.textContent = email;
-  overviewUsername.textContent = username;
-  overviewPassword.textContent = password;
-  overviewFullName.textContent = fullName;
-  overviewGender.textContent = gender ? (gender.checked ? "male" : "female") : ''; // Check if gender is selected and set to "male" or "female"
-  overviewCity.textContent = city;
-  overviewState.textContent = state;
+  document.getElementById('overview-email').textContent = email;
+  document.getElementById('overview-username').textContent = username;
+  document.getElementById('overview-password').textContent = password;
+  document.getElementById('overview-fullname').textContent = fullName;
+  document.getElementById('overview-gender').textContent = gender ? gender.value : ''; // Check if gender is selected
+  document.getElementById('overview-city').textContent = city;
+  document.getElementById('overview-state').textContent = state;
 }
 
-// Function to handle registration process 
+// Function to handle registration process
 function handleRegistration() {
   const emailInput = document.getElementById("email");
   const usernameInput = document.getElementById("username");
   const passwordInput = document.getElementById("password");
   const fullNameInput = document.getElementById("fullName");
-  const genderMaleInput = document.getElementById("male"); // Male checkbox input
-  const genderFemaleInput = document.getElementById("female"); // Female checkbox input
+  const genderInput = document.querySelector('input[name="gender"]:checked');
   const cityInput = document.getElementById("city");
   const stateInput = document.getElementById("state");
 
   // Check if all required inputs are available
-  if (!emailInput || !usernameInput || !passwordInput || !fullNameInput || !cityInput || !stateInput) {
+  if (!emailInput || !usernameInput || !passwordInput || !fullNameInput || !genderInput || !cityInput || !stateInput) {
     console.error("One or more required inputs are missing");
     return;
   }
@@ -111,7 +81,7 @@ function handleRegistration() {
   const username = usernameInput.value;
   const password = passwordInput.value;
   const fullName = fullNameInput.value;
-  const gender = genderMaleInput.checked ? "male" : (genderFemaleInput.checked ? "female" : ''); // Set gender based on checkbox selection
+  const gender = genderInput ? genderInput.value : ''; // Check if gender is selected
   const city = cityInput.value;
   const state = stateInput.value;
 
@@ -140,3 +110,14 @@ function handleRegistration() {
       console.error("Registration error:", errorCode, errorMessage);
     });
 }
+
+// When the document is loaded
+document.addEventListener("DOMContentLoaded", function() {
+  var registerForm = document.querySelector('.tab-wizard2');
+
+  registerForm.addEventListener('submit', function(e) {
+    e.preventDefault(); 
+
+    handleRegistration(); // Call handleRegistration() function to initiate registration process
+  });
+});
