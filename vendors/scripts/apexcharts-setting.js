@@ -172,54 +172,6 @@ var options3 = {
 var chart = new ApexCharts(document.querySelector("#chart3"), options3);
 chart.render();
 
-var options4 = {
-	series: [{
-		data: [44, 55, 41, 64, 22, 43, 21]
-	}, {
-		data: [53, 32, 33, 52, 13, 44, 32]
-	}],
-	chart: {
-		type: 'bar',
-		height: 430,
-		toolbar: {
-			show: false,
-		}
-	},
-	grid: {
-		show: false,
-		padding: {
-			left: 0,
-			right: 0
-		}
-	},
-	plotOptions: {
-		bar: {
-			horizontal: true,
-			dataLabels: {
-				position: 'top',
-			},
-		}
-	},
-	dataLabels: {
-		enabled: true,
-		offsetX: -6,
-		style: {
-			fontSize: '12px',
-			colors: ['#fff']
-		}
-	},
-	stroke: {
-		show: true,
-		width: 1,
-		colors: ['#fff']
-	},
-	xaxis: {
-		categories: [2014, 2015, 2016, 2017, 2018, 2019, 2020],
-	},
-};
-var chart = new ApexCharts(document.querySelector("#chart4"), options4);
-chart.render();
-
 var options8 = {
 	series: [44, 55, 41, 17],
 	chart: {
