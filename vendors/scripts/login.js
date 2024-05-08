@@ -9,6 +9,8 @@ const firebaseConfigLoginweb = {
 };
 
 
+
+
 // Initialize Firebase
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfigLoginweb);
