@@ -38,21 +38,21 @@ function isValidEmail(email) {
 }
 
 // Function to write user data to Firestore
-function writeUserData(email, username, fullName, gender, city, state) {
+function writeUserData(email, username, fullName, phoneNumber, city, state) {
   firestore.collection("users").add({
     email: email,
     username: username,
     fullName: fullName,
-    gender: gender.checked ? "male" : "female", // Change to "male" or "female" based on selection
+    phoneNumber: phoneNumber, // Change to "male" or "female" based on selection
     city: city,
     state: state
   })
-  .then((docRef) => {
-    console.log("Document written with ID: ", docRef.id);
-  })
-  .catch((error) => {
-    console.error("Error adding document: ", error);
-  });
+    .then((docRef) => {
+      console.log("Document written with ID: ", docRef.id);
+    })
+    .catch((error) => {
+      console.error("Error adding document: ", error);
+    });
 }
 
 // Function to handle next button click
@@ -61,7 +61,7 @@ function handleNextButtonClick() {
   var username = document.getElementById('username').value;
   var password = document.getElementById('password').value;
   var fullName = document.getElementById('fullName').value;
-  var gender = document.querySelector('input[name="gender"]:checked');
+  var phoneNumber = document.getElementById('phoneNumber').value;
   var city = document.getElementById('city').value;
   var state = document.getElementById('state').value;
 
@@ -70,12 +70,12 @@ function handleNextButtonClick() {
   var overviewUsername = document.getElementById('overview-username');
   var overviewPassword = document.getElementById('overview-password');
   var overviewFullName = document.getElementById('overview-fullname');
-  var overviewGender = document.getElementById('overview-gender');
+  var overviewphoneNumber = document.getElementById('overview-phoneNumber');
   var overviewCity = document.getElementById('overview-city');
   var overviewState = document.getElementById('overview-state');
 
   // Check if all overview elements exist
-  if (!overviewEmail || !overviewUsername || !overviewPassword || !overviewFullName || !overviewGender || !overviewCity || !overviewState) {
+  if (!overviewEmail || !overviewUsername || !overviewPassword || !overviewFullName || !overviewphoneNumber || !overviewCity || !overviewState) {
     console.error("One or more overview elements are missing");
     return;
   }
@@ -85,7 +85,7 @@ function handleNextButtonClick() {
   overviewUsername.textContent = username;
   overviewPassword.textContent = password;
   overviewFullName.textContent = fullName;
-  overviewGender.textContent = gender ? (gender.checked ? "male" : "female") : ''; // Check if gender is selected and set to "male" or "female"
+  overviewphoneNumber.textContent = phoneNumber; // Check if gender is selected and set to "male" or "female"
   overviewCity.textContent = city;
   overviewState.textContent = state;
 }
@@ -96,13 +96,12 @@ function handleRegistration() {
   const usernameInput = document.getElementById("username");
   const passwordInput = document.getElementById("password");
   const fullNameInput = document.getElementById("fullName");
-  const genderMaleInput = document.getElementById("male"); // Male checkbox input
-  const genderFemaleInput = document.getElementById("female"); // Female checkbox input
+  const phoneNumberInput = document.getElementById("phoneNumber"); // Male checkbox input
   const cityInput = document.getElementById("city");
   const stateInput = document.getElementById("state");
 
   // Check if all required inputs are available
-  if (!emailInput || !usernameInput || !passwordInput || !fullNameInput || !cityInput || !stateInput) {
+  if (!emailInput || !usernameInput || !passwordInput || !fullNameInput || !cityInput || !stateInput || !phoneNumberInput) {
     console.error("One or more required inputs are missing");
     return;
   }
@@ -111,7 +110,7 @@ function handleRegistration() {
   const username = usernameInput.value;
   const password = passwordInput.value;
   const fullName = fullNameInput.value;
-  const gender = genderMaleInput.checked ? "male" : (genderFemaleInput.checked ? "female" : ''); // Set gender based on checkbox selection
+  const phoneNumber = phoneNumberInput.value; // Set gender based on checkbox selection
   const city = cityInput.value;
   const state = stateInput.value;
 
@@ -131,7 +130,7 @@ function handleRegistration() {
     .then((userCredential) => {
       const user = userCredential.user;
       console.log("User registered:", user.uid);
-      writeUserData(email, username, fullName, gender, city, state); // Write user data to Firestore
+      writeUserData(email, username, fullName, phoneNumber, city, state); // Write user data to Firestore
       document.getElementById('success-modal-btn').click();
     })
     .catch((error) => {

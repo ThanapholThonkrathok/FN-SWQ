@@ -142,7 +142,7 @@
 						<span class="user-icon">
 							<img src="vendors/images/photo1.jpg" alt="">
 						</span>
-						<span class="user-name">Ross C. Lopez</span>
+						<span class="user-name" id="username"></span>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
 						<a class="dropdown-item" href="profile.html"><i class="dw dw-user1"></i> Profile</a>
@@ -317,27 +317,25 @@
 									</div>
 								</div>
 							</div>
-							<h5 class="text-center h5 mb-0">Ross C. Lopez</h5>
-							<p class="text-center text-muted font-14">Lorem ipsum dolor sit amet</p>
+							<h5 class="text-center h5 mb-0" id="fullName">Ross C. Lopez</h5>
 							<div class="profile-info">
 								<h5 class="mb-20 h5 text-blue">Contact Information</h5>
 								<ul>
 									<li>
 										<span>Email Address:</span>
-										FerdinandMChilds@test.com
+										<div id="email"></div>
 									</li>
 									<li>
 										<span>Phone Number:</span>
-										619-229-0054
+										<div id="phoneNumber"></div>
 									</li>
 									<li>
 										<span>Country:</span>
-										America
+										<div id="state"></div>
 									</li>
 									<li>
 										<span>Address:</span>
-										1807 Holden Street<br>
-										San Diego, CA 92115
+										<div id="city"></div>
 									</li>
 								</ul>
 							</div>
@@ -532,6 +530,7 @@
 	<script src="vendors/scripts/process.js"></script>
 	<script src="vendors/scripts/layout-settings.js"></script>
 	<script src="src/plugins/cropperjs/dist/cropper.js"></script>
+	<script src="vendors/scripts/userdisplayindex.js"></script>
 	<script>
 		window.addEventListener('DOMContentLoaded', function () {
 			var image = document.getElementById('image');
