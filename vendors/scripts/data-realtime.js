@@ -130,7 +130,7 @@ const fetchDataAndPushToDatabasHr = () => {
 };
 
 // เรียกใช้ fetchDataAndPushToDatabase ทุกๆ 5 นาที
-setInterval(fetchDataAndPushToDatabasHr, 300000);
+setInterval(fetchDataAndPushToDatabasHr, 3600000);
 
 
 let counterMonth = 0; // เริ่มต้นที่เดือนมกราคม
