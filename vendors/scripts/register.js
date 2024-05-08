@@ -139,3 +139,5 @@ function handleRegistration() {
       console.error("Registration error:", errorCode, errorMessage);
     });
 }
+
+
