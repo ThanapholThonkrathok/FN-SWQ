@@ -133,36 +133,74 @@ const fetchDataAndPushToDatabasHr = () => {
 setInterval(fetchDataAndPushToDatabasHr, 3600000);
 
 
-let counterMonth = 0; // เริ่มต้นที่เดือนมกราคม
 
-const fetchDataAndPushToDatabaseMonth = () => {
+
+let counterWeek = 1;
+
+const fetchDataAndPushToDatabasWeek = () => {
   fetch("http://202.29.238.30:1880/getdata")
     .then((response) => response.json())
     .then((data) => {
-      const monthNames = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-      const monthAbbreviation = monthNames[counterMonth]; // หาชื่อย่อของเดือนปัจจุบัน
-      const newDataKeyMonth = monthAbbreviation ;
+      // สร้างชื่อของข้อมูลใหม่ด้วยตัวเลขที่เพิ่มขึ้นทีละห้า
+      const newDataKeyWeek = counterWeek;
 
+      // ตั้งค่าข้อมูลที่มี key ที่สร้างขึ้น
       firebase
         .database()
-        .ref("data1Month/" + newDataKeyMonth)
+        .ref("data1Week/" + newDataKeyWeek)
         .set(data)
         .then(() => {
-          counterMonth += 1;
+          
+          counterWeek += 1;
 
-          // เมื่อ counterMonth ถึง 12 ให้รีเซ็ตค่า counter
-          if (counterMonth > 11) {
-            counterMonth = 0;
+          
+          if (newDataKeyWeek >= 7) {
+            firebase.database().ref("data1Week").remove();
+            counterWeek = 1; 
           }
         });
     })
     .catch((error) => console.error("Error fetching data:", error));
 };
 
-// เรียกใช้ fetchDataAndPushToDatabaseMonth ทุกๆ 1 เดือน
-setInterval(fetchDataAndPushToDatabaseMonth, 3000); // ประมาณ 1 เดือน (จำนวนวินาที)
+
+setInterval(fetchDataAndPushToDatabasWeek, 360000);
 
 
+
+
+
+
+let counterMonth = 1;
+
+const fetchDataAndPushToDatabasMonth = () => {
+  fetch("http://202.29.238.30:1880/getdata")
+    .then((response) => response.json())
+    .then((data) => {
+      // สร้างชื่อของข้อมูลใหม่ด้วยตัวเลขที่เพิ่มขึ้นทีละห้า
+      const newDataKeyMonth = counterMonth;
+
+      // ตั้งค่าข้อมูลที่มี key ที่สร้างขึ้น
+      firebase
+        .database()
+        .ref("data1Month/" + newDataKeyMonth)
+        .set(data)
+        .then(() => {
+          
+          counterMonth += 1;
+
+          
+          if (newDataKeyMonth >= 12) {
+            firebase.database().ref("data1Month").remove();
+            counterMonth = 1; 
+          }
+        });
+    })
+    .catch((error) => console.error("Error fetching data:", error));
+};
+
+
+setInterval(fetchDataAndPushToDatabasMonth, 3600000);
 
 
 
