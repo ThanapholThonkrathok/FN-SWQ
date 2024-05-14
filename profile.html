@@ -254,31 +254,23 @@
 				<ul id="accordion-menu">
 					<li class="dropdown">
 						<a href="index.html" class="dropdown-toggle no-arrow">
-							<span class="micon dw dw-house-1"></span><span class="mtext" href="index.html">Home</span>
+							<span class="micon dw dw-house-1"></span><span class="mtext" href="index.html">หน้าหลัก</span>
 						</a>
 					</li>
+
 					<li>
 						<a href="calendar.html" class="dropdown-toggle no-arrow">
-							<span class="micon dw dw-calendar1"></span><span class="mtext">Calendar</span>
+							<span class="micon dw dw-calendar1"></span><span class="mtext">ปฏิทิน</span>
 						</a>
 					</li>
 
 					<li class="dropdown">
 						<a href="apexcharts.html" class="dropdown-toggle no-arrow">
-							<span class="micon dw dw-analytics-21"></span><span class="mtext">Dashboard</span>
+							<span class="micon dw dw-analytics-21"></span><span class="mtext">แผงควบคุม</span>
 						</a>
 
 					</li>
-					<li class="dropdown">
-						<a href="javascript:;" class="dropdown-toggle">
-							<span class="micon dw dw-right-arrow1"></span><span class="mtext">Additional Pages</span>
-						</a>
-						<ul class="submenu">
-							<li><a href="login.html">Login</a></li>
-							<li><a href="forgot-password.html">Forgot Password</a></li>
-							<li><a href="reset-password.html">Reset Password</a></li>
-						</ul>
-					</li>
+
 				</ul>
 			</div>
 		</div>
@@ -335,24 +327,23 @@
 
 
 							<h5 class="text-center h5 mb-0">Ross C. Lopez</h5>
-							<p class="text-center text-muted font-14">Lorem ipsum dolor sit amet</p>
 							<div class="profile-info">
-								<h5 class="mb-20 h5 text-blue">Contact Information</h5>
+								<h5 class="mb-20 h5 text-blue">ข้อมูลติดต่อ</h5>
 								<ul>
 									<li>
-										<span>Email Address:</span>
+										<span>ที่อยู่อีเมล:</span>
 										FerdinandMChilds@test.com
 									</li>
 									<li>
-										<span>Phone Number:</span>
+										<span>หมายเลขโทรศัพท์:</span>
 										619-229-0054
 									</li>
 									<li>
-										<span>Country:</span>
+										<span>ประเทศ:</span>
 										America
 									</li>
 									<li>
-										<span>Address:</span>
+										<span>ที่อยู่:</span>
 										1807 Holden Street<br>
 										San Diego, CA 92115
 									</li>
@@ -367,7 +358,7 @@
 									<ul class="nav nav-tabs customtab" role="tablist">
 										<li class="nav-item">
 											<a class="nav-link" data-toggle="tab" href="#setting"
-												role="tab">Settings</a>
+												role="tab">การตั้งค่า</a>
 										</li>
 									</ul>
 									<div class="tab-content">
@@ -376,31 +367,25 @@
 										<!-- Setting Tab start -->
 										<div class="tab-pane fade height-100-p" id="setting" role="tabpanel">
 											<div class="profile-setting">
-												<form>
+												<form id="profile-form">
 													<ul class="profile-edit-list row">
 														<li class="weight-500 col-md-6">
-															<h4 class="text-blue h5 mb-20">Edit Your Personal Setting
-															</h4>
+															<h4 class="text-blue h5 mb-20">แก้ไขการตั้งค่าส่วนตัวของคุณ</h4>
 															<div class="form-group">
-																<label>Full Name</label>
-																<input class="form-control form-control-lg" type="text">
+																<label>ชื่อเต็ม</label>
+																<input id="full-name" class="form-control form-control-lg" type="text">
 															</div>
 															<div class="form-group">
-																<label>Email</label>
-																<input class="form-control form-control-lg"
-																	type="email">
+																<label>อีเมล</label>
+																<input id="email" class="form-control form-control-lg" type="email">
 															</div>
 															<div class="form-group">
-																<label>Date of birth</label>
-																<input class="form-control form-control-lg date-picker"
-																	type="text">
+																<label>วันเกิด</label>
+																<input id="dob" class="form-control form-control-lg date-picker" type="text">
 															</div>
 															<div class="form-group">
-																<label>Country</label>
-																<select
-																	class="selectpicker form-control form-control-lg"
-																	data-style="btn-outline-secondary btn-lg"
-																	title="Not Chosen">
+																<label>ประเทศ</label>
+																<select id="country" class="selectpicker form-control form-control-lg" data-style="btn-outline-secondary btn-lg" title="Not Chosen">
 																	<option>United States</option>
 																	<option>Thailand</option>
 																	<option>United Kingdom</option>
@@ -410,39 +395,36 @@
 																</select>
 															</div>
 															<div class="form-group">
-																<label>State/Province/Region</label>
-																<input class="form-control form-control-lg" type="text">
+																<label>รัฐ/จังหวัด/ภูมิภาค</label>
+																<input id="state" class="form-control form-control-lg" type="text">
 															</div>
 															<div class="form-group">
-																<label>Postal Code</label>
-																<input class="form-control form-control-lg" type="text">
+																<label>รหัสไปรษณีย์</label>
+																<input id="postal-code" class="form-control form-control-lg" type="text">
 															</div>
 															<div class="form-group">
-																<label>Phone Number</label>
-																<input class="form-control form-control-lg" type="text">
+																<label>เบอร์โทรศัพท์</label>
+																<input id="phone-number" class="form-control form-control-lg" type="text">
 															</div>
 															<div class="form-group">
-																<label>Address</label>
-																<textarea class="form-control"></textarea>
+																<label>ที่อยู่</label>
+																<textarea id="address" class="form-control"></textarea>
 															</div>
 															<div class="form-group">
 																<div class="custom-control custom-checkbox mb-5">
-																	<input type="checkbox" class="custom-control-input"
-																		id="customCheck1-1">
-																	<label class="custom-control-label weight-400"
-																		for="customCheck1-1">I agree to receive
-																		notification emails</label>
+																	<input type="checkbox" class="custom-control-input" id="customCheck1-1">
+																	<label class="custom-control-label weight-400" for="customCheck1-1">ฉันยอมรับที่จะรับอีเมลแจ้งเตือน</label>
 																</div>
 															</div>
 															<div class="form-group mb-0">
-																<input type="submit" class="btn btn-primary"
-																	value="Update Information">
+																<input type="submit" class="btn btn-primary" value="อัปเดตข้อมูล">
 															</div>
 														</li>
 													</ul>
 												</form>
 											</div>
 										</div>
+										
 										<!-- Setting Tab End -->
 									</div>
 								</div>
@@ -491,6 +473,44 @@
 			});
 		});
 	</script>
+	<script>
+		document.getElementById('profile-form').addEventListener('submit', function(event) {
+			event.preventDefault();
+	
+			const profileData = {
+				fullName: document.getElementById('full-name').value,
+				email: document.getElementById('email').value,
+				dob: document.getElementById('dob').value,
+				country: document.getElementById('country').value,
+				state: document.getElementById('state').value,
+				postalCode: document.getElementById('postal-code').value,
+				phoneNumber: document.getElementById('phone-number').value,
+				address: document.getElementById('address').value,
+				receiveNotifications: document.getElementById('customCheck1-1').checked
+			};
+	
+			localStorage.setItem('profileData', JSON.stringify(profileData));
+			alert('ข้อมูลได้รับการอัปเดตและบันทึกลงในเครื่องแล้ว!');
+		});
+	
+		// โหลดข้อมูลที่บันทึกไว้เมื่อเปิดหน้าเว็บ
+		document.addEventListener('DOMContentLoaded', function() {
+			const savedData = localStorage.getItem('profileData');
+			if (savedData) {
+				const profileData = JSON.parse(savedData);
+				document.getElementById('full-name').value = profileData.fullName;
+				document.getElementById('email').value = profileData.email;
+				document.getElementById('dob').value = profileData.dob;
+				document.getElementById('country').value = profileData.country;
+				document.getElementById('state').value = profileData.state;
+				document.getElementById('postal-code').value = profileData.postalCode;
+				document.getElementById('phone-number').value = profileData.phoneNumber;
+				document.getElementById('address').value = profileData.address;
+				document.getElementById('customCheck1-1').checked = profileData.receiveNotifications;
+			}
+		});
+	</script>
+	
 </body>
 
 </html>
