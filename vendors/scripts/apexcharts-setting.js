@@ -1,18 +1,40 @@
+// Your web app's Firebase configuration
+const firebaseConfigApex = {
+	apiKey: "AIzaSyBuIvI9x3Dcsrpl6cULwCtNtZJWRrVrSBo",
+	authDomain: "waterproject-218e8.firebaseapp.com",
+	databaseURL:
+		"https://waterproject-218e8-default-rtdb.asia-southeast1.firebasedatabase.app",
+	projectId: "waterproject-218e8",
+	storageBucket: "waterproject-218e8.appspot.com",
+	messagingSenderId: "850188820168",
+	appId: "1:850188820168:web:dc8536e99014d5d5504ffd",
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfigApex);
+
+// Reference to your Realtime Database
+const database = firebase.database();
+
+
+
+
+
 var options = {
 	series: [{
 		name: 'pH',
-		data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 9, 5, 13, 9, 17, 2, 7, 5],
-	},{
+		data: [],
+	}, {
 		name: 'TDS',
-		data: [5, 8, 50, 8, 40, 11, 12, 9, 12, 7, 19, 5, 13, 9, 17, 2, 7, 10],
-	},{
+		data: [],
+	}, {
 		name: 'DO',
-		data: [25, 3, 10, 9, 29, 19, 32, 9, 12, 7, 29, 5, 13, 9, 17, 2, 7, 20],
-	},{
+		data: [],
+	}, {
 		name: 'Temp',
-		data: [10, 3, 10, 9, 29, 19, 42, 9, 12, 7, 39, 5, 13, 9, 17, 2, 7, 30],
+		data: [],
 	}
-],
+	],
 	chart: {
 		height: 350,
 		type: 'line',
@@ -32,7 +54,7 @@ var options = {
 		curve: 'smooth'
 	},
 	xaxis: {
-		categories: ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24'],
+		categories: [],
 	},
 	title: {
 		text: '24 Hour',
@@ -46,7 +68,7 @@ var options = {
 		type: 'gradient',
 		gradient: {
 			shade: 'dark',
-			gradientToColors: [ '#1b00ff'],
+			gradientToColors: ['#1b00ff'],
 			shadeIntensity: 1,
 			type: 'horizontal',
 			opacityFrom: 1,
@@ -65,8 +87,47 @@ var options = {
 	},
 
 };
-var chart = new ApexCharts(document.querySelector("#chart1"), options);
-chart.render();
+
+
+var databaseRef = firebase.database().ref("data1Hr");
+
+
+databaseRef.on("value", function (snapshot) {
+	var newData = snapshot.val(); 
+	var pHData = [];
+	var TDSData = [];
+	var DOData = [];
+	var TempData = [];
+
+	
+	for (var key in newData) {
+		if (newData.hasOwnProperty(key)) {
+			
+			pHData.push({ x: key, y: newData[key].pH });
+			TDSData.push({ x: key, y: newData[key].TDS });
+			DOData.push({ x: key, y: newData[key].DO });
+			TempData.push({ x: key, y: newData[key].Temp });
+		}
+	}
+
+	
+	options.series = [
+		{ name: "pH", data: pHData },
+		{ name: "TDS", data: TDSData },
+		{ name: "DO", data: DOData },
+		{ name: "Temp", data: TempData },
+	];
+
+	
+	var chart = new ApexCharts(document.querySelector("#chart1"), options);
+	chart.render();
+});
+
+
+
+
+
+
 
 var options2 = {
 	series: [{
@@ -75,10 +136,10 @@ var options2 = {
 	}, {
 		name: 'TDS',
 		data: [45, 35, 45, 32, 34, 52, 41]
-	},{
+	}, {
 		name: 'DO',
 		data: [35, 25, 45, 32, 34, 52, 41]
-	},{
+	}, {
 		name: 'Temp',
 		data: [25, 10, 45, 32, 34, 52, 41]
 	}],
@@ -103,154 +164,307 @@ var options2 = {
 		curve: 'smooth'
 	},
 	xaxis: {
-		categories: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+		categories: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 	},
 	tooltip: {
 		enabled: true
 	},
 };
-var chart = new ApexCharts(document.querySelector("#chart2"), options2);
-chart.render();
 
-var options3 = {
-	series: [{
-		name: 'pH',
-		data: [34, 55, 57, 56, 61, 58, 63, 60, 66, 52, 63, 78]
-	}, {
-		name: 'TDS',
-		data: [76, 85, 101, 98, 87, 105, 91, 114, 94, 52, 63, 52]
-	}, {
-		name: 'DO',
-		data: [5, 41, 36, 26, 45, 48, 52, 53, 41, 25, 36, 12]
-	},{
-		name: 'Temp',
-		data: [50, 41, 36, 26, 45, 48, 52, 53, 41, 25, 36, 12]
-	}],
-	chart: {
+var databaseRef = firebase.database().ref("data1Week");
+
+
+databaseRef.on("value", function (snapshot) {
+	var newData = snapshot.val(); 
+	var pHData = [];
+	var TDSData = [];
+	var DOData = [];
+	var TempData = [];
+
+	
+	for (var key in newData) {
+		if (newData.hasOwnProperty(key)) {
+			
+			pHData.push({ x: key, y: newData[key].pH });
+			TDSData.push({ x: key, y: newData[key].TDS });
+			DOData.push({ x: key, y: newData[key].DO });
+			TempData.push({ x: key, y: newData[key].Temp });
+		}
+	}
+
+	
+	options2.series = [
+		{ name: "pH", data: pHData },
+		{ name: "TDS", data: TDSData },
+		{ name: "DO", data: DOData },
+		{ name: "Temp", data: TempData },
+	];
+
+	
+	var chart = new ApexCharts(document.querySelector("#chart2"), options2);
+	chart.render();
+});
+
+
+
+
+
+
+
+
+	var options3 = {
+	  series: [
+		{
+		  name: "pH",
+		  data: [],
+		},
+		{
+		  name: "TDS",
+		  data: [],
+		},
+		{
+		  name: "DO",
+		  data: [],
+		},
+		{
+		  name: "Temp",
+		  data: [],
+		},
+	  ],
+	  chart: {
 		type: 'bar',
 		height: 350,
 		toolbar: {
-			show: false,
+		  show: false,
 		}
-	},
-	plotOptions: {
+	  },
+	  plotOptions: {
 		bar: {
-			horizontal: false,
-			columnWidth: '25%',
-			endingShape: 'rounded'
+		  horizontal: false,
+		  columnWidth: '25%',
+		  endingShape: 'rounded'
 		},
-	},
-	dataLabels: {
+	  },
+	  dataLabels: {
 		enabled: false
-	},
-	stroke: {
+	  },
+	  stroke: {
 		show: true,
 		width: 2,
 		colors: ['transparent']
-	},
-	grid: {
+	  },
+	  grid: {
 		show: true,
 		padding: {
-			left: 0,
-			right: 0
+		  left: 0,
+		  right: 0
 		}
-	},
-	xaxis: {
-		categories: ['Jan','Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct','Nov','Dec'],
-	},
-	fill: {
+	  },
+	  xaxis: {
+		categories: [],
+	  },
+	  fill: {
 		opacity: 1
-	},
-	tooltip: {
+	  },
+	  tooltip: {
 		y: {
-			formatter: function (val) {
-				return "$" + val + "thousands"
-			}
+		  formatter: function (val) {
+			return "" + val + ""
+		  }
+		}
+	  }
+	};
+  
+
+var databaseRef = firebase.database().ref("data1Month");
+
+
+databaseRef.on("value", function (snapshot) {
+	var newData = snapshot.val(); 
+	var pHData = [];
+	var TDSData = [];
+	var DOData = [];
+	var TempData = [];
+
+	
+	for (var key in newData) {
+		if (newData.hasOwnProperty(key)) {
+			
+			pHData.push({ x: key, y: newData[key].pH });
+			TDSData.push({ x: key, y: newData[key].TDS });
+			DOData.push({ x: key, y: newData[key].DO });
+			TempData.push({ x: key, y: newData[key].Temp });
 		}
 	}
-};
-var chart = new ApexCharts(document.querySelector("#chart3"), options3);
-chart.render();
 
-var options8 = {
-	series: [44, 55, 41, 17],
-	chart: {
-		type: 'donut',
-	},
-	labels: ['pH', 'DO', 'TDS', 'Temp'],
-	responsive: [{
-		breakpoint: 480,
-		options: {
+	
+	options3.series = [
+		{ name: "pH", data: pHData },
+		{ name: "TDS", data: TDSData },
+		{ name: "DO", data: DOData },
+		{ name: "Temp", data: TempData },
+	];
+
+	
+	var chart = new ApexCharts(document.querySelector("#chart3"), options3);
+	chart.render();
+});
+
+  
+  
+  
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+function fetchDataAndRenderChart() {
+	firebase.database().ref('data').once('value')
+		.then(function (snapshot) {
+			var data = snapshot.val();
+			if (data) {
+				// เลือกเฉพาะค่าที่ต้องการจากข้อมูล
+				var selectedData = {
+					'pH': data.pH,
+					'DO': data.DO,
+					'TDS': data.TDS,
+					'Temp': data.Temp
+				};
+
+				var values = Object.values(selectedData);
+				var labels = Object.keys(selectedData);
+
+				var options = {
+					series: values,
+					chart: {
+						type: 'donut',
+					},
+					labels: labels,
+					responsive: [{
+						breakpoint: 480,
+						options: {
+							chart: {
+								width: 200
+							},
+							legend: {
+								position: 'bottom'
+							}
+						}
+					}]
+				};
+
+				var chart = new ApexCharts(document.querySelector("#chart8"), options);
+				chart.render();
+			} else {
+				console.log("No data available");
+			}
+		})
+		.catch(function (error) {
+			console.error("Error fetching data:", error);
+		});
+}
+
+// เรียกใช้งานฟังก์ชันเพื่อดึงข้อมูลและสร้างกราฟครั้งแรก
+fetchDataAndRenderChart();
+
+setInterval(fetchDataAndRenderChart, 300000);
+
+
+
+
+
+
+// ฟังก์ชันสำหรับดึงข้อมูลจาก Firebase Realtime Database และอัพเดทกราฟ
+function fetchDataAndRenderChartRa() {
+	firebase.database().ref('data').once('value')
+	  .then(function(snapshot) {
+		var data = snapshot.val();
+		if (data) {
+		  // เลือกเฉพาะค่าที่ต้องการจากข้อมูล
+		  var selectedData = {
+			'pH': data.pH,
+			'DO': data.DO,
+			'TDS': data.TDS,
+			'Temp': data.Temp
+		  };
+		  
+		  var values = Object.values(selectedData);
+		  var labels = Object.keys(selectedData);
+		  
+		  var options = {
+			series: values,
 			chart: {
-				width: 200
+			  height: 390,
+			  type: 'radialBar',
 			},
-			legend: {
-				position: 'bottom'
-			}
-		}
-	}]
-};
-var chart = new ApexCharts(document.querySelector("#chart8"), options8);
-chart.render();
-
-var options9 = {
-	series: [76, 67, 61, 90],
-	chart: {
-		height: 390,
-		type: 'radialBar',
-	},
-	plotOptions: {
-		radialBar: {
-			offsetY: 0,
-			startAngle: 0,
-			endAngle: 270,
-			hollow: {
-				margin: 5,
-				size: '40%',
-				background: 'transparent',
-				image: undefined,
-			},
-			dataLabels: {
-				name: {
-					show: false,
+			plotOptions: {
+			  radialBar: {
+				offsetY: 0,
+				startAngle: 0,
+				endAngle: 270,
+				hollow: {
+				  margin: 5,
+				  size: '40%',
+				  background: 'transparent',
+				  image: undefined,
 				},
-				value: {
+				dataLabels: {
+				  name: {
 					show: false,
+				  },
+				  value: {
+					show: false,
+				  }
 				}
-			}
-		}
-	},
-	colors: ['#1ab7ea', '#0084ff', '#39539E', '#0077B5'],
-	labels: ['pH', 'DO', 'TDS', 'Temp'],
-	legend: {
-		show: true,
-		floating: true,
-		fontSize: '14px',
-		position: 'left',
-		offsetX: 40,
-		offsetY: 15,
-		labels: {
-			useSeriesColors: true,
-		},
-		markers: {
-			size: 0
-		},
-		formatter: function(seriesName, opts) {
-			return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex]
-		},
-		itemMargin: {
-			vertical: 3
-		}
-	},
-	responsive: [{
-		breakpoint: 480,
-		options: {
+			  }
+			},
+			colors: ['#1ab7ea', '#0084ff', '#39539E', '#0077B5'],
+			labels: labels,
 			legend: {
-				show: false
-			}
+			  show: true,
+			  floating: true,
+			  fontSize: '14px',
+			  position: 'left',
+			  offsetX: 40,
+			  offsetY: 15,
+			  labels: {
+				useSeriesColors: true,
+			  },
+			  markers: {
+				size: 0
+			  },
+			  formatter: function (seriesName, opts) {
+				return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex]
+			  },
+			  itemMargin: {
+				vertical: 3
+			  }
+			},
+			responsive: [{
+			  breakpoint: 480,
+			  options: {
+				legend: {
+				  show: false
+				}
+			  }
+			}]
+		  };
+		  
+		  var chart = new ApexCharts(document.querySelector("#chart9"), options);
+		  chart.render();
+		} else {
+		  console.log("No data available");
 		}
-	}]
-};
-var chart = new ApexCharts(document.querySelector("#chart9"), options9);
-chart.render();
+	  })
+	  .catch(function(error) {
+		console.error("Error fetching data:", error);
+	  });
+  }
+  
+  // เรียกใช้งานฟังก์ชันเพื่อดึงข้อมูลและอัพเดทกราฟครั้งแรก
+  fetchDataAndRenderChartRa();
+  
+  // เรียกใช้งานฟังก์ชัน fetchDataAndRenderChart() ทุก 5 วินาที
+  setInterval(fetchDataAndRenderChartRa, 300000);
+  
 
