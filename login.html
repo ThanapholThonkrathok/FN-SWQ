@@ -52,15 +52,15 @@
 						<div class="login-title">
 							<h2 class="text-center text-primary">Login To WaterQuelity</h2>
 						</div>
-						<form>
+						<form id="login-form">
 							<div class="input-group custom">
-								<input type="text" class="form-control form-control-lg" placeholder="Username">
+								<input type="text" class="form-control form-control-lg" placeholder="Username" id="username" required>
 								<div class="input-group-append custom">
 									<span class="input-group-text"><i class="icon-copy dw dw-user1"></i></span>
 								</div>
 							</div>
 							<div class="input-group custom">
-								<input type="password" class="form-control form-control-lg" placeholder="**********">
+								<input type="password" class="form-control form-control-lg" placeholder="**********" id="password" required>
 								<div class="input-group-append custom">
 									<span class="input-group-text"><i class="dw dw-padlock1"></i></span>
 								</div>
@@ -79,11 +79,8 @@
 							<div class="row">
 								<div class="col-sm-12">
 									<div class="input-group mb-0">
-										<!--
-											use code for form submit
-											<input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign In">
-										-->
-										<a class="btn btn-primary btn-lg btn-block" href="index.html">Sign In</a>
+										<!-- Change href to button and add JavaScript check -->
+										<button type="button" class="btn btn-primary btn-lg btn-block" id="signInButton">Sign In</button>
 									</div>
 									<div class="font-16 weight-600 pt-10 pb-10 text-center" data-color="#707373">OR</div>
 									<div class="input-group mb-0">
@@ -102,5 +99,16 @@
 	<script src="vendors/scripts/script.min.js"></script>
 	<script src="vendors/scripts/process.js"></script>
 	<script src="vendors/scripts/layout-settings.js"></script>
+	<script>
+		document.getElementById('signInButton').addEventListener('click', function() {
+			var rememberCheckbox = document.getElementById('customCheck1');
+			if (!rememberCheckbox.checked) {
+				alert('Please check the Remember checkbox before proceeding.');
+			} else {
+				// Submit the form and redirect to index.html
+				window.location.href = "index.html";
+			}
+		});
+	</script>
 </body>
 </html>

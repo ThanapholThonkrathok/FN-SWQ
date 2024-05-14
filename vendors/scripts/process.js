@@ -45,3 +45,4 @@ document.getElementById('avatar-upload').addEventListener('change', function(eve
   
   reader.readAsDataURL(file);
 });
+
