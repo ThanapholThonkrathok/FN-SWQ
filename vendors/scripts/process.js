@@ -32,3 +32,16 @@ function animateValue(id, start, end, duration) {
 setTimeout(function () {
   $(".pre-loader").fadeOut(300);
 }, time);
+
+
+document.getElementById('avatar-upload').addEventListener('change', function(event) {
+  var selectedImage = document.getElementById('selected-image');
+  var file = event.target.files[0];
+  var reader = new FileReader();
+  
+  reader.onload = function(e) {
+      selectedImage.src = e.target.result;
+  };
+  
+  reader.readAsDataURL(file);
+});

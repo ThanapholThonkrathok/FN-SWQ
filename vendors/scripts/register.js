@@ -15,19 +15,6 @@ const firestore = firebase.firestore();
 
 // Function to handle user registration
 function registerWithEmailAndPassword(email, password) {
-  // Check password strength
-  if (password.length < 6) {
-    console.error("Password must be at least 6 characters long");
-    return Promise.reject(new Error("Password must be at least 6 characters long"));
-  }
-
-  // Check password complexity (e.g., must contain at least one digit and one special character)
-  const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*])[\w!@#$%^&*]{6,}$/;
-  if (!passwordRegex.test(password)) {
-    console.error("Password must contain at least one digit and one special character");
-    return Promise.reject(new Error("Password must contain at least one digit and one special character"));
-  }
-
   return firebase.auth().createUserWithEmailAndPassword(email, password);
 }
 
@@ -38,21 +25,20 @@ function isValidEmail(email) {
 }
 
 // Function to write user data to Firestore
-function writeUserData(email, username, fullName, phoneNumber, city, state) {
+function writeUserData(email, username, fullName, city, state) {
   firestore.collection("users").add({
     email: email,
     username: username,
     fullName: fullName,
-    phoneNumber: phoneNumber, // Change to "male" or "female" based on selection
     city: city,
     state: state
   })
-    .then((docRef) => {
-      console.log("Document written with ID: ", docRef.id);
-    })
-    .catch((error) => {
-      console.error("Error adding document: ", error);
-    });
+  .then((docRef) => {
+    console.log("Document written with ID: ", docRef.id);
+  })
+  .catch((error) => {
+    console.error("Error adding document: ", error);
+  });
 }
 
 // Function to handle next button click
@@ -61,47 +47,29 @@ function handleNextButtonClick() {
   var username = document.getElementById('username').value;
   var password = document.getElementById('password').value;
   var fullName = document.getElementById('fullName').value;
-  var phoneNumber = document.getElementById('phoneNumber').value;
   var city = document.getElementById('city').value;
   var state = document.getElementById('state').value;
 
-  // Select overview elements
-  var overviewEmail = document.getElementById('overview-email');
-  var overviewUsername = document.getElementById('overview-username');
-  var overviewPassword = document.getElementById('overview-password');
-  var overviewFullName = document.getElementById('overview-fullname');
-  var overviewphoneNumber = document.getElementById('overview-phoneNumber');
-  var overviewCity = document.getElementById('overview-city');
-  var overviewState = document.getElementById('overview-state');
-
-  // Check if all overview elements exist
-  if (!overviewEmail || !overviewUsername || !overviewPassword || !overviewFullName || !overviewphoneNumber || !overviewCity || !overviewState) {
-    console.error("One or more overview elements are missing");
-    return;
-  }
-
-  // Set text content of overview elements
-  overviewEmail.textContent = email;
-  overviewUsername.textContent = username;
-  overviewPassword.textContent = password;
-  overviewFullName.textContent = fullName;
-  overviewphoneNumber.textContent = phoneNumber; // Check if gender is selected and set to "male" or "female"
-  overviewCity.textContent = city;
-  overviewState.textContent = state;
+  document.getElementById('overview-email').textContent = email;
+  document.getElementById('overview-username').textContent = username;
+  document.getElementById('overview-password').textContent = password;
+  document.getElementById('overview-fullname').textContent = fullName;
+  document.getElementById('overview-gender').textContent = gender ? gender.value : ''; // Check if gender is selected
+  document.getElementById('overview-city').textContent = city;
+  document.getElementById('overview-state').textContent = state;
 }
 
-// Function to handle registration process 
+// Function to handle registration process
 function handleRegistration() {
   const emailInput = document.getElementById("email");
   const usernameInput = document.getElementById("username");
   const passwordInput = document.getElementById("password");
   const fullNameInput = document.getElementById("fullName");
-  const phoneNumberInput = document.getElementById("phoneNumber"); // Male checkbox input
   const cityInput = document.getElementById("city");
   const stateInput = document.getElementById("state");
 
   // Check if all required inputs are available
-  if (!emailInput || !usernameInput || !passwordInput || !fullNameInput || !cityInput || !stateInput || !phoneNumberInput) {
+  if (!emailInput || !usernameInput || !passwordInput || !fullNameInput || !cityInput || !stateInput) {
     console.error("One or more required inputs are missing");
     return;
   }
@@ -110,7 +78,6 @@ function handleRegistration() {
   const username = usernameInput.value;
   const password = passwordInput.value;
   const fullName = fullNameInput.value;
-  const phoneNumber = phoneNumberInput.value; // Set gender based on checkbox selection
   const city = cityInput.value;
   const state = stateInput.value;
 
@@ -130,7 +97,7 @@ function handleRegistration() {
     .then((userCredential) => {
       const user = userCredential.user;
       console.log("User registered:", user.uid);
-      writeUserData(email, username, fullName, phoneNumber, city, state); // Write user data to Firestore
+      writeUserData(email, username, fullName, city, state); // Write user data to Firestore
       document.getElementById('success-modal-btn').click();
     })
     .catch((error) => {
@@ -140,4 +107,13 @@ function handleRegistration() {
     });
 }
 
+// When the document is loaded
+document.addEventListener("DOMContentLoaded", function() {
+  var registerForm = document.querySelector('.tab-wizard2');
 
+  registerForm.addEventListener('submit', function(e) {
+    e.preventDefault(); 
+
+    handleRegistration(); // Call handleRegistration() function to initiate registration process
+  });
+});

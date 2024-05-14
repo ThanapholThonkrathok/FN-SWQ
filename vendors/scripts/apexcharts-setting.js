@@ -1,8 +1,18 @@
 var options = {
 	series: [{
-		name: 'Hour',
-		data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5, 13, 9, 17, 2, 7, 5]
-	}],
+		name: 'pH',
+		data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 9, 5, 13, 9, 17, 2, 7, 5],
+	},{
+		name: 'TDS',
+		data: [5, 8, 50, 8, 40, 11, 12, 9, 12, 7, 19, 5, 13, 9, 17, 2, 7, 10],
+	},{
+		name: 'DO',
+		data: [25, 3, 10, 9, 29, 19, 32, 9, 12, 7, 29, 5, 13, 9, 17, 2, 7, 20],
+	},{
+		name: 'Temp',
+		data: [10, 3, 10, 9, 29, 19, 42, 9, 12, 7, 39, 5, 13, 9, 17, 2, 7, 30],
+	}
+],
 	chart: {
 		height: 350,
 		type: 'line',
@@ -11,7 +21,7 @@ var options = {
 		}
 	},
 	grid: {
-		show: false,
+		show: true,
 		padding: {
 			left: 0,
 			right: 0
@@ -60,11 +70,17 @@ chart.render();
 
 var options2 = {
 	series: [{
-		name: 'Day',
+		name: 'pH',
 		data: [31, 40, 28, 51, 42, 109, 100]
 	}, {
-		name: 'Week',
-		data: [11, 32, 45, 32, 34, 52, 41]
+		name: 'TDS',
+		data: [45, 35, 45, 32, 34, 52, 41]
+	},{
+		name: 'DO',
+		data: [35, 25, 45, 32, 34, 52, 41]
+	},{
+		name: 'Temp',
+		data: [25, 10, 45, 32, 34, 52, 41]
 	}],
 	chart: {
 		height: 350,
@@ -74,7 +90,7 @@ var options2 = {
 		}
 	},
 	grid: {
-		show: false,
+		show: true,
 		padding: {
 			left: 0,
 			right: 0
@@ -98,14 +114,17 @@ chart.render();
 
 var options3 = {
 	series: [{
-		name: 'Day',
-		data: [44, 55, 57, 56, 61, 58, 63, 60, 66, 52, 63, 78]
+		name: 'pH',
+		data: [34, 55, 57, 56, 61, 58, 63, 60, 66, 52, 63, 78]
 	}, {
-		name: 'Week',
+		name: 'TDS',
 		data: [76, 85, 101, 98, 87, 105, 91, 114, 94, 52, 63, 52]
 	}, {
-		name: 'Month',
-		data: [35, 41, 36, 26, 45, 48, 52, 53, 41, 25, 36, 12]
+		name: 'DO',
+		data: [5, 41, 36, 26, 45, 48, 52, 53, 41, 25, 36, 12]
+	},{
+		name: 'Temp',
+		data: [50, 41, 36, 26, 45, 48, 52, 53, 41, 25, 36, 12]
 	}],
 	chart: {
 		type: 'bar',
@@ -130,7 +149,7 @@ var options3 = {
 		colors: ['transparent']
 	},
 	grid: {
-		show: false,
+		show: true,
 		padding: {
 			left: 0,
 			right: 0
@@ -151,54 +170,6 @@ var options3 = {
 	}
 };
 var chart = new ApexCharts(document.querySelector("#chart3"), options3);
-chart.render();
-
-var options4 = {
-	series: [{
-		data: [44, 55, 41, 64, 22, 43, 21]
-	}, {
-		data: [53, 32, 33, 52, 13, 44, 32]
-	}],
-	chart: {
-		type: 'bar',
-		height: 430,
-		toolbar: {
-			show: false,
-		}
-	},
-	grid: {
-		show: false,
-		padding: {
-			left: 0,
-			right: 0
-		}
-	},
-	plotOptions: {
-		bar: {
-			horizontal: true,
-			dataLabels: {
-				position: 'top',
-			},
-		}
-	},
-	dataLabels: {
-		enabled: true,
-		offsetX: -6,
-		style: {
-			fontSize: '12px',
-			colors: ['#fff']
-		}
-	},
-	stroke: {
-		show: true,
-		width: 1,
-		colors: ['#fff']
-	},
-	xaxis: {
-		categories: [2014, 2015, 2016, 2017, 2018, 2019, 2020],
-	},
-};
-var chart = new ApexCharts(document.querySelector("#chart4"), options4);
 chart.render();
 
 var options8 = {
