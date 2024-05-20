@@ -20,6 +20,14 @@
 	<link rel="stylesheet" type="text/css" href="src/plugins/cropperjs/dist/cropper.css">
 	<link rel="stylesheet" type="text/css" href="vendors/styles/style.css">
 
+
+		<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+		<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+
+		<!-- If you enabled Firebase services in the Firebase console, add the Firebase products that you want to use -->
+		<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-firestore.js"></script>
+
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>
 	<script>
@@ -139,7 +147,7 @@
 						<span class="user-icon">
 							<img src="vendors/images/photo1.jpg" alt="">
 						</span>
-						<span class="user-name">Ross C. Lopez</span>
+						<span class="user-name" id="username">Ross C. Lopez</span>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
 						<a class="dropdown-item" href="profile.html"><i class="dw dw-user1"></i> Profile</a>
@@ -326,26 +334,33 @@
 							</div>
 
 
-							<h5 class="text-center h5 mb-0">Ross C. Lopez</h5>
+							<h5 class="text-center h5 mb-0" id="fullName"></h5>
 							<div class="profile-info">
 								<h5 class="mb-20 h5 text-blue">ข้อมูลติดต่อ</h5>
 								<ul>
 									<li>
 										<span>ที่อยู่อีเมล:</span>
-										FerdinandMChilds@test.com
+										<div id="email"></div>
 									</li>
 									<li>
 										<span>หมายเลขโทรศัพท์:</span>
-										619-229-0054
+										<div id="phoneNumber">-</div>
 									</li>
 									<li>
 										<span>ประเทศ:</span>
-										America
+										<div id="contry">-</div>
+									</li>
+									<li>
+										<span>จังหวัด:</span>
+										<div id="city"></div>
 									</li>
 									<li>
 										<span>ที่อยู่:</span>
-										1807 Holden Street<br>
-										San Diego, CA 92115
+										<div id="state"></div>
+									</li>
+									<li>
+										<span>รหัสไปรษณีย์:</span>
+										<div id="postalCode">-</div>
 									</li>
 								</ul>
 							</div>
@@ -376,16 +391,8 @@
 																<input id="full-name" class="form-control form-control-lg" type="text">
 															</div>
 															<div class="form-group">
-																<label>อีเมล</label>
-																<input id="email" class="form-control form-control-lg" type="email">
-															</div>
-															<div class="form-group">
-																<label>วันเกิด</label>
-																<input id="dob" class="form-control form-control-lg date-picker" type="text">
-															</div>
-															<div class="form-group">
 																<label>ประเทศ</label>
-																<select id="country" class="selectpicker form-control form-control-lg" data-style="btn-outline-secondary btn-lg" title="Not Chosen">
+																<select id="coun-try" class="selectpicker form-control form-control-lg" data-style="btn-outline-secondary btn-lg" title="Not Chosen">
 																	<option>United States</option>
 																	<option>Thailand</option>
 																	<option>United Kingdom</option>
@@ -396,7 +403,7 @@
 															</div>
 															<div class="form-group">
 																<label>รัฐ/จังหวัด/ภูมิภาค</label>
-																<input id="state" class="form-control form-control-lg" type="text">
+																<input id="ci-ty" class="form-control form-control-lg" type="text">
 															</div>
 															<div class="form-group">
 																<label>รหัสไปรษณีย์</label>
@@ -408,14 +415,9 @@
 															</div>
 															<div class="form-group">
 																<label>ที่อยู่</label>
-																<textarea id="address" class="form-control"></textarea>
+																<textarea id="sta-te" class="form-control"></textarea>
 															</div>
 															<div class="form-group">
-																<div class="custom-control custom-checkbox mb-5">
-																	<input type="checkbox" class="custom-control-input" id="customCheck1-1">
-																	<label class="custom-control-label weight-400" for="customCheck1-1">ฉันยอมรับที่จะรับอีเมลแจ้งเตือน</label>
-																</div>
-															</div>
 															<div class="form-group mb-0">
 																<input type="submit" class="btn btn-primary" value="อัปเดตข้อมูล">
 															</div>
@@ -443,6 +445,7 @@
 	<script src="vendors/scripts/process.js"></script>
 	<script src="vendors/scripts/layout-settings.js"></script>
 	<script src="src/plugins/cropperjs/dist/cropper.js"></script>
+	<script src="vendors/scripts/userdisplayindex.js"></script>
 	<script>
 		window.addEventListener('DOMContentLoaded', function () {
 			var image = document.getElementById('image');
@@ -471,43 +474,6 @@
 				canvasData = cropper.getCanvasData();
 				cropper.destroy();
 			});
-		});
-	</script>
-	<script>
-		document.getElementById('profile-form').addEventListener('submit', function(event) {
-			event.preventDefault();
-	
-			const profileData = {
-				fullName: document.getElementById('full-name').value,
-				email: document.getElementById('email').value,
-				dob: document.getElementById('dob').value,
-				country: document.getElementById('country').value,
-				state: document.getElementById('state').value,
-				postalCode: document.getElementById('postal-code').value,
-				phoneNumber: document.getElementById('phone-number').value,
-				address: document.getElementById('address').value,
-				receiveNotifications: document.getElementById('customCheck1-1').checked
-			};
-	
-			localStorage.setItem('profileData', JSON.stringify(profileData));
-			alert('ข้อมูลได้รับการอัปเดตและบันทึกลงในเครื่องแล้ว!');
-		});
-	
-		// โหลดข้อมูลที่บันทึกไว้เมื่อเปิดหน้าเว็บ
-		document.addEventListener('DOMContentLoaded', function() {
-			const savedData = localStorage.getItem('profileData');
-			if (savedData) {
-				const profileData = JSON.parse(savedData);
-				document.getElementById('full-name').value = profileData.fullName;
-				document.getElementById('email').value = profileData.email;
-				document.getElementById('dob').value = profileData.dob;
-				document.getElementById('country').value = profileData.country;
-				document.getElementById('state').value = profileData.state;
-				document.getElementById('postal-code').value = profileData.postalCode;
-				document.getElementById('phone-number').value = profileData.phoneNumber;
-				document.getElementById('address').value = profileData.address;
-				document.getElementById('customCheck1-1').checked = profileData.receiveNotifications;
-			}
 		});
 	</script>
 	

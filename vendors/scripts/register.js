@@ -54,7 +54,6 @@ function handleNextButtonClick() {
   document.getElementById('overview-username').textContent = username;
   document.getElementById('overview-password').textContent = password;
   document.getElementById('overview-fullname').textContent = fullName;
-  document.getElementById('overview-gender').textContent = gender ? gender.value : ''; // Check if gender is selected
   document.getElementById('overview-city').textContent = city;
   document.getElementById('overview-state').textContent = state;
 }

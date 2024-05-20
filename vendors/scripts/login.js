@@ -1,37 +1,47 @@
-const firebaseConfigLoginweb = {
+document.addEventListener('DOMContentLoaded', function() {
+  // Firebase configuration
+  const firebaseConfig = {
     apiKey: "AIzaSyBuIvI9x3Dcsrpl6cULwCtNtZJWRrVrSBo",
     authDomain: "waterproject-218e8.firebaseapp.com",
     databaseURL: "https://waterproject-218e8-default-rtdb.asia-southeast1.firebasedatabase.app",
     projectId: "waterproject-218e8",
     storageBucket: "waterproject-218e8.appspot.com",
     messagingSenderId: "850188820168",
-    appId: "1:850188820168:web:dc8536e99014d5d5504ffd",
-};
+    appId: "1:850188820168:web:dc8536e99014d5d5504ffd"
+  };
 
+  // Initialize Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth(app);
+  const firestore = firebase.firestore(app);
 
+  // สร้าง UUID สำหรับเซสชันปัจจุบัน
+  const sessionUUID = uuidv4();
+  sessionStorage.setItem('sessionUUID', sessionUUID);
 
-
-// Initialize Firebase
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfigLoginweb);
+  // Function เพื่อเก็บข้อมูลผู้ใช้ใน sessionStorage โดยใช้ UUID ของเซสชันปัจจุบัน
+  function storeUserDataInSessionStorage(userData) {
+    const sessionUUID = sessionStorage.getItem('sessionUUID');
+    if (sessionUUID) {
+      sessionStorage.setItem(sessionUUID, JSON.stringify(userData));
+    } else {
+      console.error('Session UUID not found.');
+    }
   }
-  
-  const firestore = firebase.firestore();
-  const auth = firebase.auth();
-  
-  // Function to handle user login
+
+  // Function สำหรับการเข้าสู่ระบบด้วย Firebase Authentication
   function loginWithEmailAndPassword(email, password) {
     return auth.signInWithEmailAndPassword(email, password);
   }
-  
-  // Function to fetch user data from Firestore by email
+
+  // Function สำหรับการดึงข้อมูลผู้ใช้จาก Firestore โดยใช้อีเมล
   function getUserDataByEmail(email) {
     return firestore.collection("users").where("email", "==", email).get()
       .then(querySnapshot => {
         if (!querySnapshot.empty) {
           return querySnapshot.docs[0].data();
         } else {
-          return null; // User not found
+          return null; // ไม่พบผู้ใช้
         }
       })
       .catch(error => {
@@ -39,79 +49,52 @@ if (!firebase.apps.length) {
         throw error;
       });
   }
-  
-  // Function to display user data after successful login
-  function displayUserData(userData) {
-    console.log("User data:", userData);
-    // Display user data in UI or perform other actions
-  }
-  
-  // After successful login, fetch user data from Firestore and display it
+
+  // Function สำหรับเรียกใช้หลังจากเข้าสู่ระบบเรียบร้อย
   function handleSuccessfulLogin(email) {
     getUserDataByEmail(email)
       .then(userData => {
         if (userData) {
-          displayUserData(userData);
+          storeUserDataInSessionStorage(userData);
+          redirect();
         } else {
           console.error("User data not found");
-          // Handle case where user data is not found
+          // จัดการกรณีที่ไม่พบข้อมูลผู้ใช้
         }
       })
       .catch(error => {
         console.error("Error fetching user data:", error);
-        // Handle error while fetching user data
+        // จัดการข้อผิดพลาดขณะดึงข้อมูลผู้ใช้
       });
   }
-  
-  // Event listener for login form submission
-  document.getElementById("login-form").addEventListener("click", function(event) {
-    event.preventDefault(); // Prevent form submission
-  
-    // Get user input values
+
+  // Function เพื่อเปลี่ยนเส้นทางไปยัง index.html
+  function redirect() {
+    window.location.href = 'index.html';
+  }
+
+  // Event listener สำหรับการส่งคำขอล็อกอิน
+  document.getElementById("login-form").addEventListener("submit", function(event) {
+    event.preventDefault(); // ป้องกันการส่งคำขอฟอร์ม
+
+    // รับค่าอีเมลและรหัสผ่านจากผู้ใช้
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-  
-    // Call function to login with Firebase Authentication
+
+    // เรียกใช้ฟังก์ชันเข้าสู่ระบบด้วย Firebase Authentication
     loginWithEmailAndPassword(email, password)
       .then((userCredential) => {
-        // Login successful
+        // เข้าสู่ระบบสำเร็จ
         const user = userCredential.user;
         console.log("User logged in:", user.uid);
-        // Fetch and display user data from Firestore
+        // ดึงข้อมูลผู้ใช้จาก Firestore และแสดงผล
         handleSuccessfulLogin(email);
       })
       .catch((error) => {
-        // Login error
+        // เกิดข้อผิดพลาดในการเข้าสู่ระบบ
         const errorCode = error.code;
         const errorMessage = error.message;
         console.error("Login error:", errorCode, errorMessage);
       });
   });
-
-  // Function to store user data in localStorage
-function storeUserDataInLocalStorage(userData) {
-    localStorage.setItem('userData', JSON.stringify(userData));
-}
-
-// After successful login, fetch user data from Firestore and store it in localStorage
-function handleSuccessfulLogin(email) {
-    getUserDataByEmail(email)
-        .then(userData => {
-            if (userData) {
-                storeUserDataInLocalStorage(userData);
-                redirect();
-            } else {
-                console.error("User data not found");
-                // Handle case where user data is not found
-            }
-        })
-        .catch(error => {
-            console.error("Error fetching user data:", error);
-            // Handle error while fetching user data
-        });
-}
-
-// Function to redirect to index.html
-function redirect() {
-    window.location.href = 'index.html';
-}
+});
