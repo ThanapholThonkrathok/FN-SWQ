@@ -206,15 +206,23 @@ setInterval(fetchDataAndPushToDatabasMonth, 3600000);
 
 
 
-var options5 = {
+var options = {
   chart: {
     height: 350,
-    type: "bar",
+    type: "line",
     parentHeightOffset: 0,
     fontFamily: "Poppins, sans-serif",
     toolbar: {
       show: false,
     },
+  },
+  title: {
+    text: '60 นาที',
+    align: 'left',
+    style: {
+      fontSize: "16px",
+      color: '#666'
+    }
   },
   colors: ["#1b00ff", "#f56767", "#33D1FF", "#33FFB2"],
   grid: {
@@ -239,19 +247,19 @@ var options5 = {
   series: [
     {
       name: "pH",
-      data: [],
+      data: [7],
     },
     {
       name: "TDS",
-      data: [],
+      data: [9],
     },
     {
       name: "DO",
-      data: [],
+      data: [4],
     },
     {
       name: "Temp",
-      data: [],
+      data: [2],
     },
   ],
   xaxis: {
@@ -268,7 +276,7 @@ var options5 = {
     },
   },
   yaxis: {
-    show: false,
+    show: true,
   },
   legend: {
     horizontalAlign: "right",
@@ -318,15 +326,14 @@ databaseRef.on("value", function (snapshot) {
   }
 
   // อัปเดตข้อมูลใน options5 ของคุณ
-  options5.series = [
+  options.series = [
     { name: "pH", data: pHData },
-    { name: "TDS", data: TDSData },
     { name: "DO", data: DOData },
     { name: "Temp", data: TempData },
   ];
 
   // เรียกใช้งาน ApexCharts เพื่อแสดงผล
-  var chart5 = new ApexCharts(document.querySelector("#chart5"), options5);
-  chart5.render();
+  var chart = new ApexCharts(document.querySelector("#chart"), options);
+  chart.render();
 });
 
